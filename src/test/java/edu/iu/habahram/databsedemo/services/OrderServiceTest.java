@@ -21,7 +21,6 @@ class OrderServiceTest {
     @Autowired
     OrderService orderService;
 
-
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
             "postgres:15-alpine"
     );

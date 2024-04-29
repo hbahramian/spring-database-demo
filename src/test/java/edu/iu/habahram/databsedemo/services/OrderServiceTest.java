@@ -1,6 +1,5 @@
 package edu.iu.habahram.databsedemo.services;
 
-import edu.iu.habahram.databsedemo.DatabseDemoApplicationTests;
 import edu.iu.habahram.databsedemo.model.Order;
 import edu.iu.habahram.databsedemo.repository.OrderRepository;
 import org.aspectj.lang.annotation.After;
@@ -22,14 +21,25 @@ class OrderServiceTest {
     @Autowired
     OrderService orderService;
 
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
+            "postgres:15-alpine"
+    );
+
+    @DynamicPropertySource
+    void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+    }
+
     @BeforeAll
     static void setUp() {
-        DatabseDemoApplicationTests.postgres.start();
+        postgres.start();
     }
 
     @AfterAll
     static void tearDown() {
-        DatabseDemoApplicationTests.postgres.stop();
+        postgres.stop();
     }
 
     @Test
